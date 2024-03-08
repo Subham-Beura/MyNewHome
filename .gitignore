@@ -1,0 +1,6 @@
+# Node.js dependencies
+node_modules/
+# Compiled output
+dist/
+# Environment variables
+.env
