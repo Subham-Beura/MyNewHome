@@ -1,17 +1,16 @@
-import express from "express";
+import express, { Request, Response } from "express";
 
-import { PostgresJsDatabase, drizzle } from "drizzle-orm/postgres-js";
+import { drizzle, PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { property, user } from "./drizzle/schema";
 
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 dotenv.config();
-
 
 const app = express();
 
-
 let db: PostgresJsDatabase<Record<string, never>>;
+
 try {
   const queryClient = postgres(process.env.DATABASE_URL as string);
   db = drizzle(queryClient);
@@ -20,7 +19,7 @@ try {
   console.log("Error connecting to database", error);
 }
 
-app.get("/", async (req, res) => {
+app.get("/", async (req: Request, res: Response) => {
   const result = await db.select().from(property);
   console.log(result);
   res.send("Hello World!");
