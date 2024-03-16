@@ -5,11 +5,12 @@ import postgres from "postgres";
 import { property, user } from "./drizzle/schema";
 
 import * as dotenv from "dotenv";
+import userRoutes from "./user/user.routes";
 dotenv.config();
 
 const app = express();
 
-let db: PostgresJsDatabase<Record<string, never>>;
+export let db: PostgresJsDatabase<Record<string, never>>;
 
 try {
   const queryClient = postgres(process.env.DATABASE_URL as string);
@@ -24,5 +25,7 @@ app.get("/", async (req: Request, res: Response) => {
   console.log(result);
   res.send("Hello World!");
 });
+
+app.use("/user", userRoutes);
 
 export default app;
