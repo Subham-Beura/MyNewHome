@@ -10,6 +10,8 @@ dotenv.config();
 
 const app = express();
 
+app.use(express.json());
+
 export let db: PostgresJsDatabase<Record<string, never>>;
 
 try {

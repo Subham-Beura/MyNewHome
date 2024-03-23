@@ -1,5 +1,6 @@
 import request from "supertest";
 import app from "./../index";
+import { generateRandomString } from "../utils/randomString";
 
 describe("User Routes", () => {
   it("should get all users", async () => {
@@ -10,7 +11,7 @@ describe("User Routes", () => {
   });
   it("should create a new user", async () => {
     const newUser = {
-      emailId: "test@example.com",
+      emailId: generateRandomString(10) + "@beura.com",
       password: "password",
       firstName: "Test",
       middleName: "User",
@@ -18,8 +19,8 @@ describe("User Routes", () => {
       isAdmin: false,
       phoneNumber: "1234567890",
     };
-
-    const response = await request(app).post("/users").send(newUser);
+    console.log(newUser);
+    const response = await request(app).post("/user").send(newUser);
 
     expect(response.status).toBe(201);
     expect(response.body).toMatchObject({
