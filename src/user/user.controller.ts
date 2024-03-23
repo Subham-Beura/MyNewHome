@@ -24,3 +24,17 @@ export async function createUser(req: Request, res: Response) {
     });
   }
 }
+
+export async function getUserById(req: Request, res: Response) {
+  try {
+    const requestedUser = await db
+      .selectDistinct()
+      .from(user)
+      .where(eq(user.id, req.params.id));
+    if(requestedUser.length === 0)
+      throw new Error("User not found");
+    return res.status(200).json(requestedUser[0]);
+  } catch (error) {
+    res.status(404).json({msg:"User not found"})
+  }
+}
