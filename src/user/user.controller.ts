@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { db } from "..";
 import { user } from "../drizzle/schema";
 import { eq } from "drizzle-orm";
+import { Error } from "postgres";
 export async function getAllUsers(req: Request, res: Response) {
   const users = await db.select().from(user);
   res.status(200).json({
@@ -34,7 +35,7 @@ export async function getUserById(req: Request, res: Response) {
     if(requestedUser.length === 0)
       throw new Error("User not found");
     return res.status(200).json(requestedUser[0]);
-  } catch (error) {
-    res.status(404).json({msg:"User not found"})
+  } catch (error:any) {
+    res.status(404).json({msg:"User not found",error:error.message})
   }
 }
