@@ -52,3 +52,12 @@ export async function updateUserById(req: Request, res: Response) {
   }
 }
 
+export async function deleteUserById(req: Request, res: Response) {
+  const userId = req.params.id;
+  try {
+    const userDeleted = await db.delete(user).where(eq(user.id, userId));
+    return res.status(200).json({ msg: "User deleted successfully" });
+  } catch (error: any) {
+    res.status(404).json({ msg: "User not found", error: error.message });
+  }
+}
