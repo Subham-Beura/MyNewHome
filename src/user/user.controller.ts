@@ -32,10 +32,23 @@ export async function getUserById(req: Request, res: Response) {
       .selectDistinct()
       .from(user)
       .where(eq(user.id, req.params.id));
-    if(requestedUser.length === 0)
-      throw new Error("User not found");
+    if (requestedUser.length === 0) throw new Error("User not found");
     return res.status(200).json(requestedUser[0]);
-  } catch (error:any) {
-    res.status(404).json({msg:"User not found",error:error.message})
+  } catch (error: any) {
+    res.status(404).json({ msg: "User not found", error: error.message });
   }
 }
+
+export async function updateUserById(req: Request, res: Response) {
+  const userId = req.params.id;
+  const updatedUser = req.body;
+  try {
+    await db.update(user).set(updatedUser).where(eq(user.id, userId));
+    const userUpdated = await db.select().from(user).where(eq(user.id, userId));
+    if (userUpdated.length === 0) throw new Error("User not found");
+    return res.status(200).json(userUpdated[0]);
+  } catch (error: any) {
+    res.status(405).json({ msg: "User not found", error: error.message });
+  }
+}
+
