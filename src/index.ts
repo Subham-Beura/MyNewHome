@@ -23,8 +23,6 @@ try {
 }
 
 app.get("/", async (req: Request, res: Response) => {
-  const result = await db.select().from(property);
-  console.log(result);
   res.send("Hello World!");
 });
 
