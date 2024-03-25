@@ -6,6 +6,7 @@ import { property, user } from "./drizzle/schema";
 
 import * as dotenv from "dotenv";
 import userRoutes from "./user/user.routes";
+import addressRoutes from "./address/address.routes";
 dotenv.config();
 
 const app = express();
@@ -27,5 +28,6 @@ app.get("/", async (req: Request, res: Response) => {
 });
 
 app.use("/user", userRoutes);
+app.use("/address", addressRoutes);
 
 export default app;
