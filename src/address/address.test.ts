@@ -53,7 +53,7 @@ describe("GET /address/user/:userId", () => {
 
 describe("POST /address/user/:userId", () => {
   it("should create a new address for the given user ID", async () => {
-    const userId = "703fe06c-1136-4a45-b927-f3769bb5f26f"; // Replace with an actual user ID from your database
+    const userId = "703fe06c-1136-4a45-b927-f3769bb5f26f";
     const newAddress: Address = {
       unitNo: "Apt 101",
       addressLine1: "123 Main St",
@@ -62,11 +62,12 @@ describe("POST /address/user/:userId", () => {
       locality: null,
       lattitude: 123.456,
       longitude: 123.456,
-      owner: null,
+      owner: userId,
     };
     const response = await supertest(app)
       .post(`/address/user/${userId}`)
       .send(newAddress);
     expect(response.status).toBe(201);
+    expect(response.body).toMatchObject(newAddress);
   });
 });
