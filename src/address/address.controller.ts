@@ -17,8 +17,9 @@ export const getAddressByAddressId = async (req: Request, res: Response) => {
   const addressId = req.params.addressId;
 
   // Assuming you have a function to fetch the address from the database
-  const requestedAddress: AddressOrError =
-    await getAddressFromDatabase(addressId);
+  const requestedAddress: AddressOrError = await getAddressFromDatabase(
+    addressId
+  );
   if (!requestedAddress.error) {
     res.status(200).json(requestedAddress.address);
   } else {
