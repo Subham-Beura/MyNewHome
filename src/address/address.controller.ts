@@ -3,7 +3,9 @@ import { Address } from "./address.type";
 import {
   getAddressFromDatabase,
   getUserAllAddressFromDatabase,
+  createAddressForUserId,
 } from "./address.service";
+import { user } from "../drizzle/schema";
 
 export type AddressOrError = {
   address: Address | undefined;
@@ -35,5 +37,29 @@ export const getAddressFromUserId = async (req: Request, res: Response) => {
     res.status(200).json(requestedAddress.addresses);
   } else {
     res.status(404).json({ error: requestedAddress.error.message });
+  }
+};
+export const postAddressForUserId = async (req: Request, res: Response) => {
+  const userId = req.params.userId;
+  const address: Address = req.body;
+  if (!address) {
+    res.status(400).json({ error: "Address details are required" });
+    return;
+  }
+  if (!userId) {
+    res.status(400).json({ error: "User ID is required" });
+    return;
+  }
+
+  // Assuming you have a function to create a new address for the user in the database
+  const createdAddress: AddressOrError = await createAddressForUserId(
+    userId,
+    address
+  );
+
+  if (!createdAddress.error) {
+    res.status(201).json(createdAddress.address);
+  } else {
+    res.status(500).json({ error: createdAddress.error.message });
   }
 };

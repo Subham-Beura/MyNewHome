@@ -4,9 +4,8 @@ import { Address } from "./address.type";
 import { db } from "..";
 import { AddressesOrError, AddressOrError } from "./address.controller";
 
-// Function to fetch the address from the database
 export const getAddressFromDatabase = async (
-  addressId: string,
+  addressId: string
 ): Promise<AddressOrError> => {
   try {
     const requestedAddress: Address[] | undefined = await db
@@ -20,9 +19,8 @@ export const getAddressFromDatabase = async (
     return { address: undefined, error: error };
   }
 };
-// Function to fetch all addresses by user ID from the database
 export const getUserAllAddressFromDatabase = async (
-  userId: string,
+  userId: string
 ): Promise<AddressesOrError> => {
   try {
     const addresses: Address[] | undefined = await db
@@ -34,5 +32,19 @@ export const getUserAllAddressFromDatabase = async (
     return { addresses, error: undefined };
   } catch (error: any) {
     return { addresses: undefined, error };
+  }
+};
+export const createAddressForUserId = async (
+  userId: string,
+  newAddress: Address
+): Promise<AddressOrError> => {
+  try {
+    const [createdAddress]: Address[] = await db
+      .insert(address)
+      .values({ ...newAddress, owner: userId })
+      .returning();
+    return { address: createdAddress, error: undefined };
+  } catch (error: any) {
+    return { address: undefined, error };
   }
 };

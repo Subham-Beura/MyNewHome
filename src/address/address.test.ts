@@ -17,7 +17,7 @@ describe("GET /address/:addressId", () => {
     const nonExistentAddressId = "non-existent-address-id";
 
     const response = await supertest(app).get(
-      `/address/${nonExistentAddressId}`,
+      `/address/${nonExistentAddressId}`
     );
 
     expect(response.status).toBe(404);
@@ -44,9 +44,29 @@ describe("GET /address/user/:userId", () => {
     const nonExistentUserId = "non-existent-user-id";
 
     const response = await supertest(app).get(
-      `/address/user/${nonExistentUserId}`,
+      `/address/user/${nonExistentUserId}`
     );
 
     expect(response.status).toBe(404);
+  });
+});
+
+describe("POST /address/user/:userId", () => {
+  it("should create a new address for the given user ID", async () => {
+    const userId = "703fe06c-1136-4a45-b927-f3769bb5f26f"; // Replace with an actual user ID from your database
+    const newAddress: Address = {
+      unitNo: "Apt 101",
+      addressLine1: "123 Main St",
+      addressLine2: "Apt 101",
+      pincode: 12345,
+      locality: null,
+      lattitude: 123.456,
+      longitude: 123.456,
+      owner: null,
+    };
+    const response = await supertest(app)
+      .post(`/address/user/${userId}`)
+      .send(newAddress);
+    expect(response.status).toBe(201);
   });
 });
